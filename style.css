@@ -1,0 +1,136 @@
+/* Reset CSS */
+body, h1, h2, ul, li, p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style header */
+header {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Style main content */
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Style input form */
+.input-section {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+select,
+button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+/* Style bookshelves */
+.bookshelves {
+  display: flex;
+  justify-content: space-between;
+}
+
+.bookshelf {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  margin: 0 10px;
+}
+
+.bookshelf h2 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+/* Style book items */
+.book-item {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.book-item h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.action-buttons button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+.action-buttons button:hover {
+  background-color: #c9302c;
+}
+
+/* Style search input */
+.search-container {
+  margin-bottom: 20px;
+}
+
+label[for="search"] {
+  display: block;
+  margin-bottom: 6px;
+}
+
+#search {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 600px) {
+  main {
+      padding: 10px;
+  }
+
+  .bookshelves {
+      flex-direction: column;
+  }
+
+  .bookshelf {
+      margin: 0;
+      margin-bottom: 20px;
+  }
+}

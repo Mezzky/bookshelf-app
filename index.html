@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf Apps</title>
+    <link rel="stylesheet" href="style.css"> <!-- Anda dapat mengganti "styles.css" dengan nama file CSS Anda -->
+</head>
+<body>
+    <header>
+        <h1>Bookshelf Apps</h1>
+    </header>
+
+    <main>
+        <section class="input-section">
+            <h2>Tambahkan Buku</h2>
+            <form id="book-form">
+                <label for="title">Judul Buku:</label>
+                <input type="text" id="title" placeholder="Masukkan judul buku" required>
+
+                <label for="author">Penulis:</label>
+                <input type="text" id="author" placeholder="Masukkan nama penulis" required>
+
+                <label for="status">Status:</label>
+                <select id="status">
+                    <option value="belum-selesai">Belum Selesai Dibaca</option>
+                    <option value="selesai">Selesai Dibaca</option>
+                </select>
+
+                <button type="submit">Tambahkan</button>
+            </form>
+        </section>
+
+        <!-- Tambahkan input untuk pencarian -->
+        <div class="search-container">
+          <label for="search">Cari Buku:</label>
+          <input type="text" id="search" placeholder="Masukkan kata kunci pencarian">
+        </div>
+
+
+        <section class="bookshelves">
+            <div class="bookshelf" id="belum-selesai">
+                <h2>Rak Buku Belum Selesai Dibaca</h2>
+                <ul id="list-belum-selesai">
+                    <!-- Buku-buku belum selesai dibaca akan ditampilkan di sini -->
+                </ul>
+            </div>
+
+            <div class="bookshelf" id="selesai">
+                <h2>Rak Buku Selesai Dibaca</h2>
+                <ul id="list-selesai">
+                    <!-- Buku-buku selesai dibaca akan ditampilkan di sini -->
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script> <!-- Anda dapat mengganti "app.js" dengan nama file JavaScript Anda -->
+</body>
+</html>
