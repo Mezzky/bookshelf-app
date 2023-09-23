@@ -8,32 +8,53 @@ const listSelesai = document.getElementById("list-selesai");
 
 // Fungsi untuk membuat elemen buku baru
 function createBookElement(title, author, status) {
-    const bookItem = document.createElement("li");
-    bookItem.className = "book-item";
+  const bookItem = document.createElement("li");
+  bookItem.className = "book-item";
 
-    const bookInfo = document.createElement("div");
-    bookInfo.className = "book-info";
-    bookInfo.innerHTML = `
-        <h3>${title}</h3>
-        <p>Penulis: ${author}</p>
-    `;
+  const bookInfo = document.createElement("div");
+  bookInfo.className = "book-info";
+  bookInfo.innerHTML = `
+      <h3>${title}</h3>
+      <p>Penulis: ${author}</p>
+  `;
 
-    const actionButtons = document.createElement("div");
-    actionButtons.className = "action-buttons";
-    actionButtons.innerHTML = `
-        <button class="move-button" onclick="moveBook(this)">Pindahkan</button>
-        <button class="delete-button" onclick="deleteBook(this)">Hapus</button>
-    `;
+  const actionButtons = document.createElement("div");
+  actionButtons.className = "action-buttons";
+  
+  // Tambahkan kelas dan label tombol "Pindahkan" sesuai dengan status buku
+  const moveButton = document.createElement("button");
+  moveButton.className = "move-button";
+  moveButton.onclick = function () {
+      moveBook(this);
+  };
+  if (status === "selesai") {
+      moveButton.textContent = "Sudah Dibaca";
+      moveButton.classList.add("blue-button");
+  } else {
+      moveButton.textContent = "Belum Dibaca";
+      moveButton.classList.add("green-button");
+  }
 
-    bookItem.appendChild(bookInfo);
-    bookItem.appendChild(actionButtons);
+  const deleteButton = document.createElement("button");
+  deleteButton.className = "delete-button";
+  deleteButton.onclick = function () {
+      deleteBook(this);
+  };
+  deleteButton.textContent = "Hapus";
 
-    if (status === "belum-selesai") {
-        listBelumSelesai.appendChild(bookItem);
-    } else {
-        listSelesai.appendChild(bookItem);
-    }
+  actionButtons.appendChild(moveButton);
+  actionButtons.appendChild(deleteButton);
+
+  bookItem.appendChild(bookInfo);
+  bookItem.appendChild(actionButtons);
+
+  if (status === "belum-selesai") {
+      listBelumSelesai.appendChild(bookItem);
+  } else {
+      listSelesai.appendChild(bookItem);
+  }
 }
+
 
 // Fungsi untuk menambahkan buku ke rak buku
 function addBook(event) {
@@ -63,6 +84,18 @@ function addBook(event) {
 
   titleInput.value = "";
   authorInput.value = "";
+
+  // Ubah label pada tombol "Pindahkan" sesuai dengan status buku yang baru ditambahkan
+  const buttons = document.querySelectorAll(".move-button");
+  buttons.forEach(button => {
+      if (status === "selesai") {
+          button.textContent = "Sudah Dibaca";
+          button.classList.add("blue-button");
+      } else {
+          button.textContent = "Belum Dibaca";
+          button.classList.add("green-button");
+      }
+  });
 }
 
 // Fungsi untuk mengambil data buku dari localStorage saat aplikasi dimuat
@@ -70,14 +103,27 @@ function loadBooks() {
   const savedBooks = JSON.parse(localStorage.getItem("books"));
 
   if (savedBooks) {
-      savedBooks.forEach(bookData => {
-          createBookElement(bookData.title, bookData.author, bookData.status);
-      });
+    savedBooks.forEach(bookData => {
+      createBookElement(bookData.title, bookData.author, bookData.status);
+      
+      // Perbarui label dan warna tombol "Pindahkan" saat buku dibaca
+      const bookItem = document.querySelector(".book-item:last-child"); // Ambil buku yang baru saja ditambahkan
+      const moveButton = bookItem.querySelector(".move-button");
+      if (bookData.status === "selesai") {
+        moveButton.textContent = "Sudah Dibaca";
+        moveButton.classList.add("blue-button");
+      } else {
+        moveButton.textContent = "Belum Dibaca";
+        moveButton.classList.add("green-button");
+      }
+    });
   }
 }
 
+
 // Memanggil fungsi loadBooks saat aplikasi dimuat
 loadBooks();
+
 
 // Menambahkan event listener ke form untuk menambahkan buku
 bookForm.addEventListener("submit", addBook);
@@ -86,17 +132,40 @@ bookForm.addEventListener("submit", addBook);
 function moveBook(button) {
   const bookItem = button.parentElement.parentElement;
   const currentShelf = bookItem.parentElement;
-
-  // Cek apakah buku saat ini ada di rak "Belum Selesai" atau "Selesai"
   const isBelumSelesai = currentShelf === listBelumSelesai;
 
-  // Ganti rak buku sesuai dengan status buku
+  // Ubah status buku
+  const newStatus = isBelumSelesai ? "selesai" : "belum-selesai";
+
+  // Perbarui data buku di localStorage
+  const bookTitle = bookItem.querySelector("h3").textContent;
+  const savedBooks = JSON.parse(localStorage.getItem("books"));
+
+  const updatedBooks = savedBooks.map(book => {
+      if (book.title === bookTitle) {
+          book.status = newStatus;
+      }
+      return book;
+  });
+
+  localStorage.setItem("books", JSON.stringify(updatedBooks));
+
+  // Ubah label pada tombol "Pindahkan" sesuai dengan status buku
+  button.textContent = newStatus === "selesai" ? "Sudah Dibaca" : "Belum Dibaca";
+
+  // Ubah warna tombol berdasarkan status buku
+  button.classList.toggle("blue-button", newStatus === "selesai");
+  button.classList.toggle("green-button", newStatus === "belum-selesai");
+
+  // Pindahkan buku ke rak yang sesuai
   if (isBelumSelesai) {
       listSelesai.appendChild(bookItem);
   } else {
       listBelumSelesai.appendChild(bookItem);
   }
 }
+
+
 
 // Fungsi untuk menghapus buku
 function deleteBook(button) {

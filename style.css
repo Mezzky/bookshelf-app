@@ -2,6 +2,7 @@
 body, h1, h2, ul, li, p {
   margin: 0;
   padding: 0;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 /* Style header */
@@ -118,6 +119,17 @@ label[for="search"] {
   font-size: 16px;
 }
 
+/* Gaya tombol berwarna biru */
+.blue-button {
+    background-color: blue;
+    color: white;
+}
+
+/* Gaya tombol berwarna hijau */
+.green-button {
+    background-color: green;
+    color: white;
+}
 
 /* Responsive design for smaller screens */
 @media screen and (max-width: 600px) {
