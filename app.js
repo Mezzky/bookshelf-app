@@ -71,7 +71,7 @@ function addBook(event) {
 
   createBookElement(title, author, status);
 
-  // Simpan data buku ke localStorage (Kriteria 5)
+  // Simpan data buku ke localStorage
   const bookData = {
       title,
       author,
@@ -120,10 +120,8 @@ function loadBooks() {
   }
 }
 
-
 // Memanggil fungsi loadBooks saat aplikasi dimuat
 loadBooks();
-
 
 // Menambahkan event listener ke form untuk menambahkan buku
 bookForm.addEventListener("submit", addBook);
@@ -165,14 +163,11 @@ function moveBook(button) {
   }
 }
 
-
-
 // Fungsi untuk menghapus buku
 function deleteBook(button) {
   const bookItem = button.parentElement.parentElement;
   bookItem.remove();
 
-  // Tambahkan kode di sini untuk menghapus data buku dari localStorage (Kriteria 5)
   const bookTitle = bookItem.querySelector("h3").textContent;
   const savedBooks = JSON.parse(localStorage.getItem("books"));
   const updatedBooks = savedBooks.filter(book => book.title !== bookTitle);
@@ -199,6 +194,5 @@ function searchBooks() {
 
 // Tambahkan event listener untuk memanggil fungsi searchBooks() saat input berubah
 document.getElementById("search").addEventListener("input", searchBooks);
-
 
 // End of JavaScript code

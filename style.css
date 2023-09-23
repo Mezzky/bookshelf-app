@@ -119,7 +119,7 @@ label[for="search"] {
   font-size: 16px;
 }
 
-/* Gaya tombol berwarna biru */
+/* Style Green button*/
 .action-buttons .blue-button {
     background-color: rgb(20, 114, 255);
     color: white;
@@ -128,7 +128,7 @@ label[for="search"] {
     background-color: rgb(57, 136, 255);
 }
 
-/* Gaya tombol berwarna hijau */
+/* Style Blue button*/
 .action-buttons .green-button {
     background-color: rgb(55, 139, 69);
     color: white;
