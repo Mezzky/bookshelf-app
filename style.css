@@ -120,15 +120,21 @@ label[for="search"] {
 }
 
 /* Gaya tombol berwarna biru */
-.blue-button {
-    background-color: blue;
+.action-buttons .blue-button {
+    background-color: rgb(20, 114, 255);
     color: white;
+}
+.action-buttons .blue-button:hover {
+    background-color: rgb(57, 136, 255);
 }
 
 /* Gaya tombol berwarna hijau */
-.green-button {
-    background-color: green;
+.action-buttons .green-button {
+    background-color: rgb(55, 139, 69);
     color: white;
+}
+.action-buttons .green-button:hover {
+    background-color: rgb(74, 133, 84);
 }
 
 /* Responsive design for smaller screens */
