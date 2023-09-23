@@ -3,11 +3,12 @@ const bookForm = document.getElementById("book-form");
 const titleInput = document.getElementById("title");
 const authorInput = document.getElementById("author");
 const statusInput = document.getElementById("status");
+const yearInput = document.getElementById("year"); // Menambahkan elemen input tahun
 const listBelumSelesai = document.getElementById("list-belum-selesai");
 const listSelesai = document.getElementById("list-selesai");
 
 // Fungsi untuk membuat elemen buku baru
-function createBookElement(title, author, status) {
+function createBookElement(id, title, author, status, year) {
   const bookItem = document.createElement("li");
   bookItem.className = "book-item";
 
@@ -16,6 +17,7 @@ function createBookElement(title, author, status) {
   bookInfo.innerHTML = `
       <h3>${title}</h3>
       <p>Penulis: ${author}</p>
+      <p>Tahun Terbit: ${year}</p> <!-- Menampilkan tahun terbit -->
   `;
 
   const actionButtons = document.createElement("div");
@@ -55,27 +57,35 @@ function createBookElement(title, author, status) {
   }
 }
 
+// Fungsi untuk menghasilkan ID acak
+function generateRandomId() {
+  return Math.floor(Math.random() * 1000000); // Ubah rentang sesuai kebutuhan Anda
+}
 
 // Fungsi untuk menambahkan buku ke rak buku
 function addBook(event) {
   event.preventDefault();
 
+  const id = generateRandomId(); // Generate ID acak
   const title = titleInput.value;
   const author = authorInput.value;
   const status = statusInput.value;
+  const year = yearInput.value; // Ambil nilai tahun
 
-  if (title === "" || author === "") {
-      alert("Judul dan penulis buku harus diisi.");
+  if (title === "" || author === "" || year === "") {
+      alert("Judul, penulis, dan tahun buku harus diisi.");
       return;
   }
 
-  createBookElement(title, author, status);
+  createBookElement(id, title, author, status, year); // Menambahkan ID dan tahun ke dalam fungsi ini
 
   // Simpan data buku ke localStorage
   const bookData = {
+      id, // Simpan ID
       title,
       author,
-      status
+      status,
+      year // Simpan tahun
   };
 
   let savedBooks = JSON.parse(localStorage.getItem("books")) || [];
@@ -84,6 +94,7 @@ function addBook(event) {
 
   titleInput.value = "";
   authorInput.value = "";
+  yearInput.value = ""; // Reset input tahun
 
   // Ubah label pada tombol "Pindahkan" sesuai dengan status buku yang baru ditambahkan
   const buttons = document.querySelectorAll(".move-button");
@@ -104,8 +115,14 @@ function loadBooks() {
 
   if (savedBooks) {
     savedBooks.forEach(bookData => {
-      createBookElement(bookData.title, bookData.author, bookData.status);
-      
+      createBookElement(
+        bookData.id, // Tambahkan ID
+        bookData.title,
+        bookData.author,
+        bookData.status,
+        bookData.year // Tambahkan tahun
+      );
+
       // Perbarui label dan warna tombol "Pindahkan" saat buku dibaca
       const bookItem = document.querySelector(".book-item:last-child"); // Ambil buku yang baru saja ditambahkan
       const moveButton = bookItem.querySelector(".move-button");
@@ -174,23 +191,29 @@ function deleteBook(button) {
   localStorage.setItem("books", JSON.stringify(updatedBooks));
 }
 
-// Fungsi untuk melakukan pencarian buku berdasarkan judul atau penulis
+// Fungsi untuk melakukan pencarian buku berdasarkan judul, penulis, atau tahun
 function searchBooks() {
   const searchTerm = document.getElementById("search").value.toLowerCase();
   const bookItems = document.querySelectorAll(".book-item");
 
   bookItems.forEach(bookItem => {
-      const bookTitle = bookItem.querySelector("h3").textContent.toLowerCase();
-      const bookAuthor = bookItem.querySelector("p").textContent.toLowerCase();
+    const bookTitle = bookItem.querySelector("h3").textContent.toLowerCase();
+    const bookAuthor = bookItem.querySelector("p").textContent.toLowerCase();
+    const bookYear = bookItem.querySelector("p:last-child").textContent.toLowerCase(); // Ambil tahun
 
-      // Periksa apakah judul atau penulis buku cocok dengan kata kunci pencarian
-      if (bookTitle.includes(searchTerm) || bookAuthor.includes(searchTerm)) {
-          bookItem.style.display = ""; // Tampilkan buku jika cocok
-      } else {
-          bookItem.style.display = "none"; // Sembunyikan buku jika tidak cocok
-      }
+    // Periksa apakah judul, penulis, atau tahun buku cocok dengan kata kunci pencarian
+    if (
+      bookTitle.includes(searchTerm) ||
+      bookAuthor.includes(searchTerm) ||
+      bookYear.includes(searchTerm) // Periksa tahun juga
+    ) {
+      bookItem.style.display = ""; // Tampilkan buku jika cocok
+    } else {
+      bookItem.style.display = "none"; // Sembunyikan buku jika tidak cocok
+    }
   });
 }
+
 
 // Tambahkan event listener untuk memanggil fungsi searchBooks() saat input berubah
 document.getElementById("search").addEventListener("input", searchBooks);
