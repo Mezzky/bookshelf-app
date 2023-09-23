@@ -57,16 +57,16 @@ function createBookElement(id, title, author, status, year) {
   }
 }
 
-// Fungsi untuk menghasilkan ID acak
-function generateRandomId() {
-  return Math.floor(Math.random() * 1000000); // Ubah rentang sesuai kebutuhan Anda
+// Fungsi untuk menghasilkan ID unik berdasarkan timestamp
+function generateUniqueId() {
+  return +new Date(); // Menggunakan nilai timestamp sebagai ID
 }
 
 // Fungsi untuk menambahkan buku ke rak buku
 function addBook(event) {
   event.preventDefault();
 
-  const id = generateRandomId(); // Generate ID acak
+  const id = generateUniqueId(); // Generate ID 
   const title = titleInput.value;
   const author = authorInput.value;
   const status = statusInput.value;
@@ -96,18 +96,21 @@ function addBook(event) {
   authorInput.value = "";
   yearInput.value = ""; // Reset input tahun
 
-  // Ubah label pada tombol "Pindahkan" sesuai dengan status buku yang baru ditambahkan
-  const buttons = document.querySelectorAll(".move-button");
-  buttons.forEach(button => {
-      if (status === "selesai") {
-          button.textContent = "Sudah Dibaca";
-          button.classList.add("blue-button");
-      } else {
-          button.textContent = "Belum Dibaca";
-          button.classList.add("green-button");
-      }
-  });
+  // Tambahkan kelas dan label tombol "Pindahkan" sesuai dengan status buku yang baru ditambahkan
+  const bookItem = document.querySelector(".book-item:last-child"); // Ambil buku yang baru saja ditambahkan
+  const moveButton = bookItem.querySelector(".move-button");
+  moveButton.onclick = function () {
+    moveBook(this);
+  };
+  if (status === "selesai") {
+    moveButton.textContent = "Sudah Dibaca";
+    moveButton.classList.add("blue-button");
+  } else {
+    moveButton.textContent = "Belum Dibaca";
+    moveButton.classList.add("green-button");
+  }
 }
+
 
 // Fungsi untuk mengambil data buku dari localStorage saat aplikasi dimuat
 function loadBooks() {
@@ -167,8 +170,7 @@ function moveBook(button) {
 
   // Ubah label pada tombol "Pindahkan" sesuai dengan status buku
   button.textContent = newStatus === "selesai" ? "Sudah Dibaca" : "Belum Dibaca";
-
-  // Ubah warna tombol berdasarkan status buku
+  // Perbarui juga kelas pada tombol sesuai dengan status buku
   button.classList.toggle("blue-button", newStatus === "selesai");
   button.classList.toggle("green-button", newStatus === "belum-selesai");
 
