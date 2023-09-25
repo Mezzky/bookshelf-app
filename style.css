@@ -30,7 +30,7 @@ label {
   margin-bottom: 6px;
 }
 
-input[type="text"],
+input,
 select,
 button {
   width: 100%;
