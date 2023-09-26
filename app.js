@@ -68,7 +68,7 @@ function addBook(event) {
   const id = generateUniqueId(); 
   const title = titleInput.value;
   const author = authorInput.value;
-  const year = yearInput.value;
+  const year = parseInt(yearInput.value);
 
   if (title === "" || author === "" || isNaN(year)) {
       alert("Judul, penulis, dan tahun buku harus diisi dan tahun harus berupa angka.");
