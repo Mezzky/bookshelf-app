@@ -7,7 +7,7 @@ const listBelumSelesai = document.getElementById("list-belum-selesai");
 const listSelesai = document.getElementById("list-selesai");
 
 // Fungsi untuk membuat elemen buku baru
-function createBookElement(id, title, author, status, year) {
+function createBookElement(id, title, author, isComplete, year) {
   const bookItem = document.createElement("li");
   bookItem.className = "book-item";
 
@@ -22,13 +22,13 @@ function createBookElement(id, title, author, status, year) {
   const actionButtons = document.createElement("div");
   actionButtons.className = "action-buttons";
   
-  // Tambahkan kelas dan label tombol sesuai dengan status buku
+  // Tambahkan kelas dan label tombol sesuai dengan isComplete buku
   const moveButton = document.createElement("button");
   moveButton.className = "move-button";
   moveButton.onclick = function () {
       moveBook(this);
   };
-  if (status) {
+  if (isComplete) {
       moveButton.textContent = "Sudah Dibaca";
       moveButton.classList.add("blue-button");
   } else {
@@ -49,7 +49,7 @@ function createBookElement(id, title, author, status, year) {
   bookItem.appendChild(bookInfo);
   bookItem.appendChild(actionButtons);
 
-  if (status) {
+  if (isComplete) {
       listSelesai.appendChild(bookItem);
   } else {
       listBelumSelesai.appendChild(bookItem);
@@ -75,16 +75,16 @@ function addBook(event) {
       return;
   }
 
-  let status = false; // Status awal, belum dibaca
+  let isComplete = false; // Status awal, belum dibaca
 
-  createBookElement(id, title, author, status, year);
+  createBookElement(id, title, author, isComplete, year);
 
   // Simpan data buku ke localStorage
   const bookData = {
       id,
       title,
       author,
-      status,
+      isComplete,
       year
   };
 
@@ -107,14 +107,14 @@ function loadBooks() {
         bookData.id,
         bookData.title,
         bookData.author,
-        bookData.status,
+        bookData.isComplete,
         bookData.year
       );
 
       // Perbarui label dan warna tombol saat buku dibaca
       const bookItem = document.querySelector(".book-item:last-child"); // Ambil buku yang baru saja ditambahkan
       const moveButton = bookItem.querySelector(".move-button");
-      if (bookData.status) {
+      if (bookData.isComplete) {
         moveButton.textContent = "Sudah Dibaca";
         moveButton.classList.add("blue-button");
       } else {
@@ -137,7 +137,7 @@ function moveBook(button) {
   const currentShelf = bookItem.parentElement;
   const isBelumSelesai = currentShelf === listBelumSelesai;
 
-  // Ubah status buku
+  // Ubah isComplete buku
   const newStatus = isBelumSelesai ? true : false;
 
   // Perbarui data buku di localStorage
@@ -146,7 +146,7 @@ function moveBook(button) {
 
   const updatedBooks = savedBooks.map(book => {
     if (book.title === bookTitle) {
-      book.status = newStatus;
+      book.isComplete = newStatus;
     }
     return book;
   });
@@ -160,7 +160,7 @@ function moveBook(button) {
     listBelumSelesai.appendChild(bookItem);
   }
 
-  // Ubah label pada tombol sesuai dengan status buku
+  // Ubah label pada tombol sesuai dengan isComplete buku
   button.textContent = newStatus ? "Sudah Dibaca" : "Belum Dibaca";
   button.classList.toggle("blue-button", newStatus);
   button.classList.toggle("green-button", !newStatus);
@@ -170,13 +170,13 @@ function moveBook(button) {
 function deleteBook(button) {
   const bookItem = button.parentElement.parentElement;
   bookItem.remove();
-
+  
   const bookTitle = bookItem.querySelector("h3").textContent;
   const savedBooks = JSON.parse(localStorage.getItem("books"));
   const updatedBooks = savedBooks.filter(book => book.title !== bookTitle);
   localStorage.setItem("books", JSON.stringify(updatedBooks));
-
-  alert("Buku Berhasil di Hapus");
+  
+  alert(`Buku ${bookTitle} Berhasil di Hapus`);
 }
 
 // Fungsi untuk melakukan pencarian buku berdasarkan judul, penulis, atau tahun
